@@ -1,0 +1,258 @@
+﻿/* login page css */
+
+/* Importing fonts from Google */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+/* Reseting */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: #ecf0f3;
+}
+
+.wrapper {
+    max-width: 350px;
+    min-height: 500px;
+    margin: 80px auto;
+    padding: 40px 30px 30px 30px;
+    background-color: #ecf0f3;
+    border-radius: 15px;
+    box-shadow: 13px 13px 20px #cbced1, -13px -13px 20px #fff;
+}
+
+.logo {
+    width: 80px;
+    margin: auto;
+}
+
+.logo img {
+    width: 100%;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 0px 0px 3px #5f5f5f,
+        0px 0px 0px 5px #ecf0f3,
+        8px 8px 15px #a7aaa7,
+        -8px -8px 15px #fff;
+}
+
+.wrapper .name {
+    font-weight: 600;
+    font-size: 1.4rem;
+    letter-spacing: 1.3px;
+    padding-left: 10px;
+    color: #555;
+}
+
+.wrapper .form-field input {
+    width: 100%;
+    display: block;
+    border: none;
+    outline: none;
+    background: none;
+    font-size: 1.2rem;
+    color: #666;
+    padding: 10px 15px 10px 10px;
+    /* border: 1px solid red; */
+}
+
+.wrapper .form-field {
+    padding-left: 10px;
+    margin-bottom: 20px;
+    border-radius: 20px;
+    box-shadow: inset 8px 8px 8px #cbced1, inset -8px -8px 8px #fff;
+}
+
+.wrapper .form-field .fas {
+    color: #555;
+}
+
+.wrapper .btn {
+    box-shadow: none;
+    width: 100%;
+    height: 40px;
+    background-color: #03A9F4;
+    color: #fff;
+    border-radius: 25px;
+    box-shadow: 3px 3px 3px #b1b1b1,
+        -3px -3px 3px #fff;
+    letter-spacing: 1.3px;
+}
+
+.wrapper .btn:hover {
+    background-color: #039BE5;
+}
+
+.wrapper a {
+    text-decoration: none;
+    font-size: 0.8rem;
+    color: #03A9F4;
+}
+
+.wrapper a:hover {
+    color: #039BE5;
+}
+
+@media(max-width: 380px) {
+    .wrapper {
+        margin: 30px 20px;
+        padding: 40px 15px 15px 15px;
+    }
+}
+
+
+/* signup page css */
+.signup-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    overflow: auto;
+    padding: 20px;
+}
+
+.signup-form {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 13px 13px 20px #cbced1, -13px -13px 20px #fff;
+    width: 100%;
+    max-width: 600px;
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two equal columns */
+    gap: 15px; /* Space between form fields */
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-label {
+    margin-bottom: 5px; /* Slight margin to better align labels */
+    font-weight: bold;
+}
+
+.form-control {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.form-control.is-invalid {
+    border-color: #dc3545;
+}
+
+.invalid-feedback {
+    color: #dc3545;
+    font-size: 0.9rem;
+    margin-top: 5px; /* Align error message below the input */
+}
+
+/* Full-width submit button spans both columns */
+.signup-form button {
+    grid-column: span 2;
+    padding: 10px;
+    font-size: 1rem;
+}
+  
+  /* Home Page Css */
+  .application-bg-color{
+    background-image: url(./assets//BGfront.jpg);
+    position: fixed; 
+    min-height: 100%;
+    min-width: 100%;
+    background-size: cover;
+    background-position: center;
+  }
+
+.image{
+  position: absolute;
+  top: 32%;
+  right: 20%;
+}
+
+@media only screen and (max-width: 600px) {
+  .image {
+    visibility: hidden;
+  }
+ .SignUpBtn{
+   margin: 60px;
+ }
+}
+
+.li{
+  text-decoration: none;
+  color: white;
+  padding: 20px;
+  text-decoration: none;
+}
+
+.GetStart{
+  background-color: white;
+  color: rgb(82, 91, 211);
+  padding: 10px;
+  text-decoration: none;
+  border-radius: 5px;
+  margin-left: 10px;
+}
+
+.li:hover{
+  color: rgb(82, 91, 211);
+  cursor: pointer;
+  background-color: white;
+  transition-duration: 0.4s;
+}
+.SignUpBtn{
+  color:blue;
+  background-color: white;
+  cursor: pointer;
+  border: none;
+  padding: 18px 29px;
+  border-radius: 6px;
+  margin-top: 4%;
+  margin-left: 13%;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  
+}
+
+@media only screen and (max-width: 600px) {
+  .GetStart{
+    background-color: rgb(82, 91, 211);
+    color: white;
+    padding: 0;
+  }
+}
+
+.SignUpBtn:hover{
+  background-color: rgb(22, 6, 168);
+  transition-duration: 0.4s;
+  color: white;
+}
+
+.LoginBtn:hover{
+  background-color: rgb(22, 6, 168);
+  transition-duration: 0.4s;
+  color: white;
+}
+
+
+.LoginBtn {
+  color:blue;
+  background-color: white;
+  cursor: pointer;
+  border: none;
+  padding: 18px 33px;
+  border-radius: 6px;
+  margin-top: 4%;
+  margin-left: 3%;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  
+}

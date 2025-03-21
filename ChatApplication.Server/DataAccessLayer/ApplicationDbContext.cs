@@ -17,6 +17,8 @@ namespace ChatApplication.Server.DataAccessLayer
         //Generate DatabaseTable for ApplicationUser.cs
         public DbSet<ApplicationUser> ApplicationUser { get; set; } 
 
+        public DbSet<UserOTP> UserOTP { get; set; }
+
         //protected override void OnModelCreating(ModelBuilder builder)
         //{
         //    base.OnModelCreating(builder);

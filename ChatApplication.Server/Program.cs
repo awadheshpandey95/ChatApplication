@@ -63,7 +63,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-
+// Register Email Service
+builder.Services.AddScoped<EmailService>();
 
 // Add CORS policy
 builder.Services.AddCors(options =>

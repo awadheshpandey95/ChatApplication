@@ -14,12 +14,14 @@ namespace ChatApplication.Server.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ApplicationDbContext _dbContext;
         private readonly TokenService _tokenService;
+        private readonly EmailService _emailService;
 
-        public AccountController(UserManager<IdentityUser> userManager,ApplicationDbContext dbContext,TokenService tokenService)
+        public AccountController(UserManager<IdentityUser> userManager,ApplicationDbContext dbContext,TokenService tokenService,EmailService emailService)
         {
             _userManager = userManager;
             _dbContext = dbContext;
             _tokenService = tokenService;
+            _emailService = emailService;
         }
 
         [HttpPost("Signup")]
@@ -87,6 +89,34 @@ namespace ChatApplication.Server.Controllers
             }
         }
 
+        [HttpPost("VerifyOTP")]
+        public async Task<IActionResult> VerifyOTP(VerifyOtpDto otpData)
+        {
+            try
+            {
+                var otpRecord = await _dbContext.UserOTP
+                    .Where(o => o.Email == otpData.Email && o.OTP == otpData.OTP && o.ExpiryTime > DateTime.UtcNow)
+                    .FirstOrDefaultAsync();
+
+                if (otpRecord == null)
+                {
+                    return BadRequest(new { message = "Invalid or expired OTP." });
+                }
+
+                // OTP is valid, generate token
+                var token = _tokenService.GenerateToken(otpData.Email);
+
+                // Remove OTP after successful verification
+                _dbContext.UserOTP.Remove(otpRecord);
+                await _dbContext.SaveChangesAsync();
+
+                return Ok(new { Token = token, message = "Login successful." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An unexpected error occurred.", error = ex.Message });
+            }
+        }
 
         [HttpPost("Login")]
         public async Task<IActionResult> Login(UserLoginDto loginData)
@@ -112,14 +142,29 @@ namespace ChatApplication.Server.Controllers
                     return Unauthorized(new { message = "Invalid credentials." });
                 }
 
-                if (user != null && isPasswordValid)
+                // Generate OTP
+                string otp = _emailService.GenerateOTP();
+
+                // Store OTP in the database temporarily
+                var otpRecord = new UserOTP
                 {
-                    var token = _tokenService.GenerateToken(user.Email);
+                    Email = loginData.Email,
+                    OTP = otp,
+                    ExpiryTime = DateTime.UtcNow.AddMinutes(5) // OTP expires in 5 minutes
+                };
 
-                    return Ok(new { Token = token, message = "Login successful.", user });
-                }
+                //if (user != null && isPasswordValid)
+                //{
+                //    var token = _tokenService.GenerateToken(user.Email);
 
-                return Unauthorized();
+                //    return Ok(new { Token = token, message = "Login successful.", user });
+                //}
+
+                await _emailService.SendEmailAsync(loginData.Email, "Your OTP Code", $"Your OTP code is: {otp}");
+
+                return Ok(new { message = "OTP sent to email. Please verify." });
+
+                //return Unauthorized();
             }
             catch (Exception ex)
             {

@@ -112,7 +112,6 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
     overflow: auto;
     padding: 20px;
 }
@@ -121,12 +120,11 @@ body {
     background: #fff;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 13px 13px 20px #cbced1, -13px -13px 20px #fff;
     width: 100%;
-    max-width: 600px;
+    max-width: 1200px;
     display: grid;
     grid-template-columns: 1fr 1fr; /* Two equal columns */
-    gap: 15px; /* Space between form fields */
+    gap: 10px; /* Space between form fields */
 }
 
 .form-group {

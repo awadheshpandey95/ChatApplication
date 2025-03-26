@@ -4,7 +4,8 @@ import Navbar from './Components/Navbar';
 import Home from './Components/Home';
 import Login from './Components/Login';
 import Signup from './Components/Signup';
-import Chat from './Components/Chat';
+import VerifyOTP from './Components/VerifyOTP';
+import ChatApp from './Components/Chat/ChatApp';
 
 function App() {
     return (
@@ -18,6 +19,8 @@ function App() {
                         <Route path="/" element={<Home/>} />
                         <Route path="/Login" element={<Login />} />
                         <Route path="/Signup" element={<Signup />} />
+                        <Route path="/VerifyOTP" element={<VerifyOTP />} />
+                        <Route path="/ChatApp" element={<ChatApp />} />
                     </Routes>
                 </Router>
             </main>

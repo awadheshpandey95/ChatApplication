@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ChatApplication.Server.DataAccessLayer;
+using ChatApplication.Server.Models.ChatDto;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Concurrent;
 
 namespace ChatApplication.Server.Controllers
@@ -7,24 +9,28 @@ namespace ChatApplication.Server.Controllers
     [Route("api/[controller]")]
     public class ChatController : ControllerBase
     {
-        private static readonly ConcurrentBag<string> messages = new();
+        private readonly ApplicationDbContext _chatcontext;
 
-        [HttpGet]
-        public ActionResult<IEnumerable<string>> GetMessages()
+        public ChatController(ApplicationDbContext dbContext)
         {
-            return Ok(messages);
+            _chatcontext = dbContext;
         }
 
-        [HttpPost]
-        public ActionResult SendMessage([FromBody] string message)
+        [HttpPost("SendMessage")]
+        public IActionResult SendMessage([FromBody] ChatMessage message)
         {
-            if (string.IsNullOrWhiteSpace(message))
-            {
-                return BadRequest("Message cannot be empty.");
-            }
+            message.Timestamp = DateTime.UtcNow;
+            _chatcontext.ChatMessage.Add(message);
+            _chatcontext.SaveChanges();
 
-            messages.Add(message);
-            return Ok();
+            return Ok("Message sent successfully");
+        }
+
+        [HttpGet("GetMessages")]
+        public IActionResult GetMessages()
+        {
+            var messages = _chatcontext.ChatMessage.OrderBy(m => m.Timestamp).ToList();
+            return Ok(messages);
         }
     }
 }

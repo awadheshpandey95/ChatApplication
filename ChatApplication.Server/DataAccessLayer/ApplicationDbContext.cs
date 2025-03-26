@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using ChatApplication.Server.Models.ChatDto;
 
 namespace ChatApplication.Server.DataAccessLayer
 {
@@ -18,6 +19,8 @@ namespace ChatApplication.Server.DataAccessLayer
         public DbSet<ApplicationUser> ApplicationUser { get; set; } 
 
         public DbSet<UserOTP> UserOTP { get; set; }
+
+        public DbSet<ChatMessage> ChatMessage { get; set; }
 
         //protected override void OnModelCreating(ModelBuilder builder)
         //{

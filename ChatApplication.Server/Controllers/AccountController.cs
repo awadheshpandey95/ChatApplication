@@ -110,7 +110,7 @@ namespace ChatApplication.Server.Controllers
                 _dbContext.UserOTP.Remove(otpRecord);
                 await _dbContext.SaveChangesAsync();
 
-                return Ok(new { Token = token, message = "Login successful." });
+                return Ok(new { Token = token, message = "Verification successful." });
             }
             catch (Exception ex)
             {
@@ -153,18 +153,13 @@ namespace ChatApplication.Server.Controllers
                     ExpiryTime = DateTime.UtcNow.AddMinutes(5) // OTP expires in 5 minutes
                 };
 
-                //if (user != null && isPasswordValid)
-                //{
-                //    var token = _tokenService.GenerateToken(user.Email);
-
-                //    return Ok(new { Token = token, message = "Login successful.", user });
-                //}
-
                 await _emailService.SendEmailAsync(loginData.Email, "Your OTP Code", $"Your OTP code is: {otp}");
 
-                return Ok(new { message = "OTP sent to email. Please verify." });
+                // Save User OTP details into UserOTP table
+                _dbContext.UserOTP.Add(otpRecord);
+                await _dbContext.SaveChangesAsync();
 
-                //return Unauthorized();
+                return Ok(new { message = "OTP sent to email. Please verify.", user });
             }
             catch (Exception ex)
             {

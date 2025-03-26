@@ -19,24 +19,24 @@ const Login = () => {
         body: JSON.stringify({ email: emailId, password }),
       });
 
+      const result = await response.json();
+
       if (response.ok) {
-        alert("Login Successful");
-        navigate("/Login");
+        alert("OTP Send Successfully");
+        console.log('Login Details:', result);
+        sessionStorage.setItem("EmailId", result.user.email);
+        navigate("/VerifyOTP");
       } 
       else {
         const errorData = await response.json();
         alert(`Error: ${errorData.message || "Login failed"}`);
-      }
-  
-      const result = await response.json();
-      console.log('Login successful:', result);
-  
+      } 
+
     } catch (error) {
       console.log('Error during login:', error);
     }
   };
   
-
   return (
     <div className="pt-1">
       <div className="wrapper">

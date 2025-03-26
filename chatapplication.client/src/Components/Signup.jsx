@@ -78,7 +78,7 @@ const Signup = () => {
 
   return (
     <div className="signup-container">
-      <form onSubmit={handleSubmit} className="signup-form mt-5">
+      <form onSubmit={handleSubmit} className="signup-form">
         {[
           { label: "Username", name: "userName", type: "text", placeholder: "Enter username" },
           { label: "Email", name: "email", type: "email", placeholder: "Enter email" },

@@ -5,15 +5,17 @@ namespace ChatApplication.Server.Hubs
     public class ChatHub : Hub
     {
         // Send message to a specific user
-        public async Task SendMessageToUser(string userId, string message)
+        public async Task SendMessageToUser(string receiverId, string message)
         {
-            await Clients.User(userId).SendAsync("ReceiveMessage", Context.User.Identity.Name, message);
+            var senderId = Context.UserIdentifier;
+            await Clients.User(receiverId).SendAsync("ReceiveMessage", senderId, message);
         }
 
         // Send message to a group
         public async Task SendMessageToGroup(string groupName, string message)
         {
-            await Clients.Group(groupName).SendAsync("ReceiveGroupMessage", Context.User.Identity.Name, message);
+            var senderId = Context.UserIdentifier;
+            await Clients.Group(groupName).SendAsync("ReceiveGroupMessage", senderId, message);
         }
 
         // Join a group
@@ -26,6 +28,18 @@ namespace ChatApplication.Server.Hubs
         public async Task LeaveGroup(string groupName)
         {
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
+        }
+
+        public override async Task OnConnectedAsync()
+        {
+            await Clients.User(Context.UserIdentifier).SendAsync("UserConnected", Context.UserIdentifier);
+            await base.OnConnectedAsync();
+        }
+
+        public override async Task OnDisconnectedAsync(Exception exception)
+        {
+            await Clients.User(Context.UserIdentifier).SendAsync("UserDisconnected", Context.UserIdentifier);
+            await base.OnDisconnectedAsync(exception);
         }
     }
 }

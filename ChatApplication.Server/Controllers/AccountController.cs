@@ -1,9 +1,11 @@
 ﻿using ChatApplication.Server.DataAccessLayer;
 using ChatApplication.Server.Helpers;
 using ChatApplication.Server.Models.UserDto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace ChatApplication.Server.Controllers
 {
@@ -168,16 +170,18 @@ namespace ChatApplication.Server.Controllers
             }
         }
 
-
         [HttpGet("GetAllUsers")]
-        public IActionResult GetAllUsers()
+        public async Task<IActionResult> GetAllUsers()
         {
-            //For Identity Table Data With Hash Password
-            //var users = _userManager.Users.ToList();
-            //return Ok(users);
+            var users = await _userManager.Users
+                .Select(u => new
+                {
+                    u.Id,
+                    u.UserName,
+                    u.Email
+                })
+                .ToListAsync();
 
-            //For ApplicationUser Table Data
-            var users = _dbContext.ApplicationUser.ToList();
             return Ok(users);
         }
 

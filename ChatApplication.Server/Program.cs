@@ -61,6 +61,22 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["SecretKey"])),
             ValidateLifetime = true
         };
+
+        // Add this for SignalR token handling
+        //options.Events = new JwtBearerEvents
+        //{
+        //    OnMessageReceived = context =>
+        //    {
+        //        var accessToken = context.Request.Query["access_token"];
+        //        var path = context.HttpContext.Request.Path;
+        //        if (!string.IsNullOrEmpty(accessToken) &&
+        //            path.StartsWithSegments("/chathub"))
+        //        {
+        //            context.Token = accessToken;
+        //        }
+        //        return Task.CompletedTask;
+        //    }
+        //};
     });
 
 // Register Email Service
@@ -73,9 +89,17 @@ builder.Services.AddCors(options =>
     {
         policy.AllowAnyHeader()
               .AllowAnyMethod()
-              .WithOrigins("https://localhost:51042")
+              .WithOrigins("https://localhost:3000", // React app
+                "https://localhost:51042", // Alternative port
+                "https://localhost:7002"  // API
+                )
               .AllowCredentials();
     });
+});
+
+builder.Services.AddSignalR(options =>
+{
+    options.EnableDetailedErrors = true;
 });
 
 var app = builder.Build();
@@ -83,6 +107,9 @@ var app = builder.Build();
 // Add middleware to the request pipeline
 app.UseDefaultFiles();
 app.UseStaticFiles();
+
+// Enable WebSockets
+app.UseWebSockets();
 
 app.UseCors();
 app.UseHttpsRedirection();
@@ -92,6 +119,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-app.MapHub<ChatHub>("/ChatHub");
+app.MapHub<ChatHub>("/chathub");
 
 app.Run();
